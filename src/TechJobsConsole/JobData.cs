@@ -47,16 +47,44 @@ namespace TechJobsConsole
 
             foreach (Dictionary<string, string> row in AllJobs)
             {
-                string aValue = row[column];
+                string aValue = row[column].ToLower();
 
-                if (aValue.Contains(value))
+                if (aValue.Contains(value.ToLower()))
                 {
                     jobs.Add(row);
                 }
             }
 
+            return jobs; //resources/notifications.html#
+        }
+
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            foreach (Dictionary<string, string> row in AllJobs)
+            {
+                //search in every column in every row for the user serach term
+                foreach (string rowValue in row.Values)
+                {
+                    string lowercaseValue = rowValue.ToLower();
+
+                    //if jobs !contain row then add it to jobs
+                    //if (!jobs.Contains(row))
+                    if (lowercaseValue.Contains(value.ToLower()))
+                    {
+                        jobs.Add(row);
+                        break;
+                    }
+                }
+            }
+
             return jobs;
         }
+
 
         /*
          * Load and parse data from job_data.csv
